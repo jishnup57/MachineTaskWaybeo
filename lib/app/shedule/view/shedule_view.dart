@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:weeklysheduler/app/shedule/controller/shedule_controller.dart';
 import 'package:weeklysheduler/app/utils/styles.dart';
 
 class SheduleView extends StatelessWidget {
-  const SheduleView({Key? key}) : super(key: key);
-
+   SheduleView({Key? key}) : super(key: key);
+  final SheduleController ctrl = Get.put(SheduleController());
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Set your weekly hours",
           style: AppStyle.appBarText.copyWith(fontSize: 20.sp),
@@ -25,24 +28,41 @@ class SheduleView extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return  Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                TickMark(),
-                ChipWidget(title: "Morning"),
-                ChipWidget(title: "Afternoon"),
-                ChipWidget(title: "Evening"),
-              ],
-            );
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    TickMark(),
+                    ChipWidget(title: "Morning"),
+                    ChipWidget(title: "Afternoon"),
+                    ChipWidget(title: "Evening"),
+                  ],
+                );
               },
-              separatorBuilder: (context, index) => const Divider(thickness: 1.5,),
+              separatorBuilder: (context, index) => const Divider(
+                thickness: 1.5,
+              ),
               itemCount: 7,
             ),
-             const Divider(thickness: 1.5,),
-            SizedBox(
-              height: 30.h,
+            const Divider(
+              thickness: 1.5,
             ),
-            ElevatedButton(onPressed: (){}, child:  Text("Save",style: AppStyle.appBarText.copyWith(color: Colors.white,fontSize: 18.sp),))
+      
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: ElevatedButton(
+                onPressed: () {
+                  Get.back();
+                },
+                style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)
+                )),
+                child: Text(
+                  "Save",
+                  style: AppStyle.appBarText
+                      .copyWith(color: Colors.white, fontSize: 16.sp),
+                ),
+              ),
+            )
           ],
         ),
       ),
