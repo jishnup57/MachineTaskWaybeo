@@ -24,13 +24,16 @@ class SheduleModelAdapter extends TypeAdapter<SheduleModel> {
       morning: fields[4] as bool,
       afternoon: fields[5] as bool,
       evening: fields[6] as bool,
+      selMrg: fields[7] as bool,
+      selAft: fields[8] as bool,
+      selEve: fields[9] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, SheduleModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +47,13 @@ class SheduleModelAdapter extends TypeAdapter<SheduleModel> {
       ..writeByte(5)
       ..write(obj.afternoon)
       ..writeByte(6)
-      ..write(obj.evening);
+      ..write(obj.evening)
+      ..writeByte(7)
+      ..write(obj.selMrg)
+      ..writeByte(8)
+      ..write(obj.selAft)
+      ..writeByte(9)
+      ..write(obj.selEve);
   }
 
   @override

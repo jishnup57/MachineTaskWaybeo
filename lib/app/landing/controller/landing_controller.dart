@@ -15,13 +15,13 @@ class LandingController extends GetxController {
 
   createSheduleDB() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    final value = sp.getBool("is_avl")??false;
-    if(value){
-        return;
+    final value = sp.getBool("is_avl") ?? false;
+    if (value) {
+      return;
     }
     log("create called");
     final box = await Hive.openBox<SheduleModel>('shedule.db');
-    for (var i = 1; i <= 7; i++) {
+    for (var i = 0; i <= 6; i++) {
       final obj = SheduleModel(
         id: i,
         day: generateDay(i),
@@ -30,27 +30,29 @@ class LandingController extends GetxController {
         morning: false,
         afternoon: false,
         evening: false,
+        selMrg: false,
+        selAft: false,
+        selEve: false,
       );
       await box.put(i, obj);
     }
-     final list = await getAll();
-     print(list);
+
     await addToSharedPref();
   }
 
   String generateDay(int i) {
     switch (i) {
-      case 1:
+      case 0:
         return 'SUN';
-      case 2:
+      case 1:
         return 'MON';
-      case 3:
+      case 2:
         return 'TUE';
-      case 4:
+      case 3:
         return 'WED';
-      case 5:
+      case 4:
         return 'THU';
-      case 6:
+      case 5:
         return 'FRI';
       default:
         return 'SAT';

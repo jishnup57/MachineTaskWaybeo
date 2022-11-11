@@ -1,7 +1,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
- part 'shedule_model.g.dart';
+part 'shedule_model.g.dart';
+
 @HiveType(typeId: 1)
-class SheduleModel{
+class SheduleModel {
   @HiveField(0)
   int id;
 
@@ -22,6 +23,15 @@ class SheduleModel{
 
   @HiveField(6)
   bool evening;
+
+  @HiveField(7)
+  bool selMrg;
+
+  @HiveField(8)
+  bool selAft;
+
+  @HiveField(9)
+  bool selEve;
   SheduleModel({
     required this.id,
     required this.day,
@@ -30,5 +40,38 @@ class SheduleModel{
     required this.morning,
     required this.afternoon,
     required this.evening,
+    required this.selMrg,
+    required this.selAft,
+    required this.selEve,
   });
+
+  SheduleModel copyWith(
+      {int? id,
+      String? day,
+      String? date,
+      bool? compleatlyBooked,
+      bool? morning,
+      bool? afternoon,
+      bool? evening,
+      bool? selMrg,
+      bool? selAft,
+      bool? selEve}) {
+    return SheduleModel(
+      id: id ?? this.id,
+      day: day ?? this.day,
+      date: date ?? this.date,
+      compleatlyBooked: compleatlyBooked ?? this.compleatlyBooked,
+      morning: morning ?? this.morning,
+      afternoon: afternoon ?? this.afternoon,
+      evening: evening ?? this.evening,
+      selMrg: selMrg ?? this.selMrg,
+      selAft: selAft ?? this.selAft,
+      selEve: selEve ?? this.selEve,
+    );
+  }
+  @override
+  String toString() {
+    return 'SheduleModel(id: $id, day: $day, date: $date, compleatlyBooked: $compleatlyBooked, morning: $morning, afternoon: $afternoon, evening: $evening, selMrg: $selMrg, selAft: $selAft, selEve: $selEve)';
+     
+  }
 }
