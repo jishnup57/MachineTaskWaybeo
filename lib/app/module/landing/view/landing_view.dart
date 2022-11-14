@@ -22,7 +22,23 @@ class LandingView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton.icon(
-                      onPressed: () =>context.read<LandingController>().reset(),
+                      onPressed: () {
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Are you sure?'),
+                            content: const Text('Do you want to delete all the data?'),
+                            actions: [
+                              TextButton(onPressed: () {
+                                Navigator.pop(context);
+                              }, child: const Text('No')),
+                              TextButton(onPressed: () {
+                                context.read<LandingController>().reset();
+                                Navigator.pop(context);
+                              }, child: const Text('Yes')),
+                            ],
+                          );
+                        });
+                      },
                       icon: const Icon(
                         Icons.restore,
                         color: Colors.red,
