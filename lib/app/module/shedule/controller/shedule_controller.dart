@@ -1,24 +1,28 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:weeklysheduler/app/landing/controller/landing_controller.dart';
-import 'package:weeklysheduler/app/shedule/model/shedule_model.dart';
+import 'package:weeklysheduler/app/module/landing/controller/landing_controller.dart';
+import 'package:weeklysheduler/app/module/landing/view/landing_view.dart';
+import 'package:weeklysheduler/app/module/shedule/model/shedule_model.dart';
+
+import 'package:weeklysheduler/app/utils/navigations.dart';
+import 'package:weeklysheduler/app/utils/styles.dart';
+
 
 enum SheduleType { mrg, noon, evg }
 
-class SheduleController extends GetxController {
-  @override
-  void onInit() async {
-    await fetchDB();
-    super.onInit();
-  }
+class SheduleController extends ChangeNotifier {
+
+
+
 
   List<SheduleModel> allSheduleList = [];
   fetchDB() async {
     final list = await LandingController().getAll();
     allSheduleList.clear();
     allSheduleList.addAll(list);
-    update();
+    notifyListeners();
   }
 
   onSave() async {
@@ -26,15 +30,17 @@ class SheduleController extends GetxController {
       if (element.morning == true &&
           element.afternoon == true &&
           element.evening == true) {
-        element.compleatlyBooked == true;
+        element.compleatlyBooked = true;
       }
     });
     final box = await Hive.openBox<SheduleModel>('shedule.db');
     await Future.forEach(bookingQueue, (SheduleModel element) async {
       await box.put(element.id, element);
     });
+    log("saved");
     bookingQueue.clear();
-    Get.back();
+    
+    RoutesNavigation.pushReplacement(const LandingView());
   }
 
   selecter(String title, int index) {
@@ -50,7 +56,7 @@ class SheduleController extends GetxController {
         break;
       default:
     }
-    update();
+    notifyListeners();
   }
 
   Color colorSelecter(SheduleType type, int index) {
@@ -59,19 +65,19 @@ class SheduleController extends GetxController {
         if (allSheduleList[index].selMrg == true) {
           return Colors.grey;
         }
-        return Colors.purple;
+        return AppStyle.primaryColor;
 
       case SheduleType.noon:
         if (allSheduleList[index].selAft == true) {
           return Colors.grey;
         }
-        return Colors.purple;
+        return AppStyle.primaryColor;
 
       default:
         if (allSheduleList[index].selEve == true) {
           return Colors.grey;
         }
-        return Colors.purple;
+        return AppStyle.primaryColor;
     }
   }
 
@@ -106,7 +112,7 @@ class SheduleController extends GetxController {
         }
         colorSelecter(type, index);
     }
-    update();
+    notifyListeners();
   }
 
   addToBookingQueue(SheduleModel item, SheduleType type) {

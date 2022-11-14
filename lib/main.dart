@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:weeklysheduler/app/shedule/model/shedule_model.dart';
-import 'package:weeklysheduler/app/splash/view/splash_view.dart';
+import 'package:weeklysheduler/app/module/shedule/model/shedule_model.dart';
+import 'package:weeklysheduler/app/module/splash/view/splash_view.dart';
+import 'package:weeklysheduler/app/utils/navigations.dart';
+import 'package:weeklysheduler/app/utils/provider.dart';
+import 'package:weeklysheduler/app/utils/styles.dart';
 
 
 void main() async {
@@ -13,7 +15,7 @@ void main() async {
   if (!Hive.isAdapterRegistered(SheduleModelAdapter().typeId)) {
     Hive.registerAdapter(SheduleModelAdapter());
   }
-  runApp(const MyApp());
+  runApp(const ProviderRaper(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,12 +28,13 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return GetMaterialApp(
+        return MaterialApp(
+          navigatorKey: RoutesNavigation.statekey,
         theme: ThemeData(
-            primarySwatch: Colors.purple,
+            primarySwatch: AppStyle. buildMaterialColor(const Color(0xff7c6ad6)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        home:   Splash(),
+        home:   const Splash(),
       );
       },
     );
